@@ -2,13 +2,11 @@ package main
 
 import (
 	"flag"
-	"net/http"
 	"os"
 	"time"
 
 	"github.com/go-kit/log"
 	"github.com/go-kit/log/level"
-	"github.com/gorilla/mux"
 
 	"github.com/ATOR-Development/anon-download-links/internal/api"
 	"github.com/ATOR-Development/anon-download-links/internal/config"
@@ -42,12 +40,6 @@ func main() {
 
 	level.Info(logger).Log("msg", "starting http server", "listen", *listenAddress)
 
-	api := api.New(downloads, logger)
-
-	router := mux.NewRouter()
-	router.HandleFunc("/api/downloads", api.HandleDownloads).Methods("GET")
-	router.HandleFunc("/download/{name}", api.HandleDownload).Methods("GET")
-
-	http.Handle("/", router)
-	http.ListenAndServe(*listenAddress, nil)
+	api := api.New(cfg, downloads, logger)
+	api.Listen(*listenAddress)
 }

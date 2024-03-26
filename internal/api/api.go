@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 
+	"github.com/ATOR-Development/anon-download-links/internal/config"
 	"github.com/ATOR-Development/anon-download-links/internal/downloads"
 	"github.com/go-kit/log"
 	"github.com/go-kit/log/level"
@@ -11,17 +12,29 @@ import (
 )
 
 type API struct {
+	cfg       *config.Config
 	downloads *downloads.Downloads
 
 	logger log.Logger
 }
 
-func New(downloads *downloads.Downloads, logger log.Logger) *API {
+func New(cfg *config.Config, downloads *downloads.Downloads, logger log.Logger) *API {
 	return &API{
+		cfg:       cfg,
 		downloads: downloads,
 
 		logger: log.WithPrefix(logger, "service", "api"),
 	}
+}
+
+func (a *API) Listen(listenAddress string) {
+	router := mux.NewRouter()
+	router.HandleFunc("/api/downloads", a.HandleDownloads).Methods("GET")
+	router.HandleFunc("/download/{name}", a.HandleDownload).Methods("GET")
+	router.HandleFunc("/hc", a.HandleHC).Methods("GET")
+
+	http.Handle("/", router)
+	http.ListenAndServe(listenAddress, nil)
 }
 
 func (a *API) HandleDownloads(w http.ResponseWriter, r *http.Request) {
@@ -70,4 +83,23 @@ func (a *API) HandleDownload(w http.ResponseWriter, r *http.Request) {
 	}
 
 	http.Redirect(w, r, downloadURL, http.StatusFound)
+}
+
+func (a *API) HandleHC(w http.ResponseWriter, r *http.Request) {
+	level.Error(a.logger).Log("msg", "handling health check")
+
+	artifacts, err := a.downloads.GetArtifacts(r.Context())
+	if err != nil {
+		level.Error(a.logger).Log("msg", "unable to get artifacts", "err", err)
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	if len(artifacts) != len(a.cfg.Artifacts) {
+		level.Error(a.logger).Log("msg", "unable to fetch all artifacts", "required", len(a.cfg.Artifacts), "fetched", len(artifacts))
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	w.Write([]byte("OK"))
 }
