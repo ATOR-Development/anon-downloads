@@ -10,6 +10,7 @@ import (
 type Config struct {
 	Owner       string     `yaml:"owner"`
 	Repo        string     `yaml:"repo"`
+	Token       string     `yaml:"token"`
 	CachePeriod string     `yaml:"cachePeriod"`
 	Artifacts   []Artifact `yaml:"artifacts"`
 }

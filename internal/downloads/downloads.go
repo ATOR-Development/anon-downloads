@@ -24,6 +24,7 @@ type Artifact struct {
 type Downloads struct {
 	owner       string
 	repo        string
+	token       string
 	releases    []*release
 	cachePeriod time.Duration
 
@@ -56,6 +57,7 @@ func New(cfg *config.Config, logger log.Logger) (*Downloads, error) {
 	return &Downloads{
 		owner:       cfg.Owner,
 		repo:        cfg.Repo,
+		token:       cfg.Token,
 		releases:    releases,
 		cachePeriod: cachePeriod,
 
@@ -98,6 +100,10 @@ func (d *Downloads) fetchArtifacts(ctx context.Context) ([]*Artifact, error) {
 	if err != nil {
 		return nil, err
 	}
+
+	req.Header.Add("Accept", "application/vnd.github+json")
+	req.Header.Add("Authorization", fmt.Sprintf("Bearer %s", d.token))
+	req.Header.Add("X-GitHub-Api-Version", "2022-11-28")
 
 	req = req.WithContext(ctx)
 

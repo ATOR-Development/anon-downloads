@@ -1,5 +1,6 @@
 owner: ATOR-Development
 repo: ator-protocol
+token: ""
 cachePeriod: 1m
 artifacts:
   - name: macos-amd64
