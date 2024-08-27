@@ -45,6 +45,11 @@ job "anon-downloads-live" {
           "traefik.http.routers.anon-downloads.rule=Host(`download-live.dmz.ator.dev`)",
           "traefik.http.routers.anon-downloads.tls=true",
           "traefik.http.routers.anon-downloads.tls.certresolver=atorresolver",
+
+          "traefik.http.routers.any1-downloads.entrypoints=https",
+          "traefik.http.routers.any1-downloads.rule=Host(`download.en.anyone.tech`)",
+          "traefik.http.routers.any1-downloads.tls=true",
+          "traefik.http.routers.any1-downloads.tls.certresolver=anyoneresolver",
         ]
         check {
           name     = "anon downloads alive"
