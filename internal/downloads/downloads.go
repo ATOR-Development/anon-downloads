@@ -125,6 +125,8 @@ func (d *Downloads) fetchArtifacts(ctx context.Context) ([]*Artifact, error) {
 		return nil, err
 	}
 
+	level.Warn(d.logger).Log("msg", "Assets Length", len(githubReleaseResp.Assets))
+
 	var artifacts []*Artifact
 	for _, r := range d.releases {
 		matches := 0

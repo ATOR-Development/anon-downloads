@@ -24,7 +24,7 @@ job "anon-downloads-live" {
       driver = "docker"
 
       config {
-        image = "ghcr.io/ator-development/anon-downloads:v0.0.4"
+        image = "ghcr.io/ator-development/anon-downloads:v0.0.7"
         ports = ["downloads-http"]
         volumes = [
           "local/config.yml:/app/config.yml:ro",
@@ -71,7 +71,7 @@ job "anon-downloads-live" {
 owner: ATOR-Development
 repo: ator-protocol
 token: ""
-cachePeriod: 5m
+cachePeriod: 15m
 artifacts:
   - name: macos-amd64
     regexp: '^anon-live-macos-amd64.+'
