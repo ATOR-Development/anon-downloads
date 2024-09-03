@@ -70,7 +70,7 @@ job "anon-downloads-live" {
         data = <<EOH
 owner: ATOR-Development
 repo: ator-protocol
-token: "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"
+token: ""
 cachePeriod: 5m
 artifacts:
   - name: macos-amd64
