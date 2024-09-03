@@ -24,11 +24,15 @@ job "anon-downloads-live" {
       driver = "docker"
 
       config {
-        image = "ghcr.io/ator-development/anon-downloads:v0.0.7"
+        image = "ghcr.io/ator-development/anon-downloads:v0.0.8"
         ports = ["downloads-http"]
         volumes = [
           "local/config.yml:/app/config.yml:ro",
         ]
+      }
+
+      vault {
+        policies = ["anon-downloads"]
       }
 
       resources {
@@ -66,11 +70,12 @@ job "anon-downloads-live" {
       }
 
       template {
-        change_mode = "noop"
         data = <<EOH
 owner: ATOR-Development
 repo: ator-protocol
-token: ""
+{{with secret "kv/anon-downloads"}}
+token: "{{.Data.data.GITHUB_TOKEN}}"
+{{end}}
 cachePeriod: 15m
 artifacts:
   - name: macos-amd64
