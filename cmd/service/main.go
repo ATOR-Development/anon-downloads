@@ -8,9 +8,9 @@ import (
 	"github.com/go-kit/log"
 	"github.com/go-kit/log/level"
 
-	"github.com/ATOR-Development/anon-download-links/internal/api"
-	"github.com/ATOR-Development/anon-download-links/internal/config"
-	"github.com/ATOR-Development/anon-download-links/internal/downloads"
+	"github.com/anyone-protocol/anon-downloads/internal/api"
+	"github.com/anyone-protocol/anon-downloads/internal/config"
+	"github.com/anyone-protocol/anon-downloads/internal/downloads"
 )
 
 var (
