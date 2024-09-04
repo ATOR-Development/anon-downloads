@@ -71,7 +71,7 @@ job "anon-downloads-live" {
 
       template {
         data = <<EOH
-owner: ATOR-Development
+owner: anyone-protocol
 repo: ator-protocol
 {{with secret "kv/anon-downloads"}}
 token: "{{.Data.data.GITHUB_TOKEN}}"
