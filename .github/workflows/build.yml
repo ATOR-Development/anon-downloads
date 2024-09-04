@@ -21,4 +21,4 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           push: true
-          tags: ghcr.io/ator-development/anon-downloads:${{ github.ref_name }}
+          tags: ghcr.io/anyone-protocol/anon-downloads:${{ github.ref_name }}
