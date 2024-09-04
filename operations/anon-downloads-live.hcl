@@ -24,7 +24,7 @@ job "anon-downloads-live" {
       driver = "docker"
 
       config {
-        image = "ghcr.io/ator-development/anon-downloads:v0.0.8"
+        image = "ghcr.io/anyone-protocol/anon-downloads:v0.0.8"
         ports = ["downloads-http"]
         volumes = [
           "local/config.yml:/app/config.yml:ro",
