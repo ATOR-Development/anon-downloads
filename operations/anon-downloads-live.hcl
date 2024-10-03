@@ -14,7 +14,6 @@ job "anon-downloads-live" {
     network  {
       mode = "bridge"
       port "downloads-http" {
-        static = 8008
         to = 8080
         host_network = "wireguard"
       }
@@ -57,9 +56,8 @@ job "anon-downloads-live" {
         ]
         check {
           name     = "anon downloads alive"
-          type     = "http"
+          type     = "tcp"
           port     = "downloads-http"
-          path     = "/hc"
           interval = "10s"
           timeout  = "10s"
           check_restart {
